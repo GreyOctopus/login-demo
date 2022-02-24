@@ -1,184 +1,115 @@
-// function dropHandler(ev) {
-//     console.log('File(s) dropped');
-  
-//     // Prevent default behavior (Prevent file from being opened)
-//     ev.preventDefault();
-  
-//     if (ev.dataTransfer.items) {
-//       // Use DataTransferItemList interface to access the file(s)
-//       for (var i = 0; i < ev.dataTransfer.items.length; i++) {
-//         // If dropped items aren't files, reject them
-//         if (ev.dataTransfer.items[i].kind === 'file') {
-//           var file = ev.dataTransfer.items[i].getAsFile();
-//           console.log('... file[' + i + '].name = ' + file.name);
-//         }
-//       }
-//     } else {
-//       // Use DataTransfer interface to access the file(s)
-//       for (var i = 0; i < ev.dataTransfer.files.length; i++) {
-//         console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
-//       }
-//     }
-//   }
+// feature detection for drag&drop upload
+const isAdvancedUpload = function () {
+	const div = document.createElement('div')
+	return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window
+}()
 
-// function dragOverHandler(ev) {
-//   console.log('File(s) in drop zone');
+document.addEventListener("DOMContentLoaded", function (event) {
+	// applying the effect for every form
+	const forms = document.querySelectorAll('.box')
+	Array.prototype.forEach.call(forms, function (form) {
+		const input = form.querySelector('input[type="file"]')
+		const label = form.querySelector('label')
+		const errorMsg = form.querySelector('.box__error span')
+		const restart = form.querySelectorAll('.box__restart')
+		const showFiles = function (files) {
+			console.log(files[0].name)
+			label.textContent = files[0].name
+		}
+		const triggerFormSubmit = function () {
+			const event = document.createEvent('HTMLEvents')
+			event.initEvent('submit', true, false)
+			form.dispatchEvent(event)
+		}
 
-//   // Prevent default behavior (Prevent file from being opened)
-//   ev.preventDefault();
-// }
+		// letting the server side to know we are going to make an Ajax request
+		const ajaxFlag = document.createElement('input')
+		ajaxFlag.setAttribute('type', 'hidden')
+		ajaxFlag.setAttribute('name', 'ajax')
+		ajaxFlag.setAttribute('value', 1)
+		form.appendChild(ajaxFlag)
 
-
-
-'use strict';
-
-;( function ( document, window, index )
-{
-    // feature detection for drag&drop upload
-    var isAdvancedUpload = function()
-        {
-            var div = document.createElement( 'div' );
-            return ( ( 'draggable' in div ) || ( 'ondragstart' in div && 'ondrop' in div ) ) && 'FormData' in window && 'FileReader' in window;
-        }();
+		// automatically submit the form on file select
+		input.addEventListener('change', function (e) {
+			showFiles(e.target.files)
 
 
-    // applying the effect for every form
-    var forms = document.querySelectorAll( '.box' );
-    Array.prototype.forEach.call( forms, function( form )
-    {
-        var input		 = form.querySelector( 'input[type="file"]' ),
-            label		 = form.querySelector( 'label' ),
-            errorMsg	 = form.querySelector( '.box__error span' ),
-            restart		 = form.querySelectorAll( '.box__restart' ),
-            droppedFiles = false,
-            showFiles	 = function( files )
-            {
-                label.textContent = files.length > 1 ? ( input.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', files.length ) : files[ 0 ].name;
-            },
-            triggerFormSubmit = function()
-            {
-                var event = document.createEvent( 'HTMLEvents' );
-                event.initEvent( 'submit', true, false );
-                form.dispatchEvent( event );
-            };
+		})
 
-        // letting the server side to know we are going to make an Ajax request
-        var ajaxFlag = document.createElement( 'input' );
-        ajaxFlag.setAttribute( 'type', 'hidden' );
-        ajaxFlag.setAttribute( 'name', 'ajax' );
-        ajaxFlag.setAttribute( 'value', 1 );
-        form.appendChild( ajaxFlag );
+		// drag&drop files if the feature is available
+		if (isAdvancedUpload) {
+			form.classList.add('has-advanced-upload'); // letting the CSS part to know drag&drop is supported by the browser
 
-        // automatically submit the form on file select
-        input.addEventListener( 'change', function( e )
-        {
-            showFiles( e.target.files );
+			['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'].forEach(function (event) {
+				form.addEventListener(event, function (e) {
+					// preventing the unwanted behaviours
+					e.preventDefault()
+					e.stopPropagation()
+				})
+			});
+			['dragover', 'dragenter'].forEach(function (event) {
+				form.addEventListener(event, function () {
+					form.classList.add('is-dragover')
+				})
+			});
+			['dragleave', 'dragend', 'drop'].forEach(function (event) {
+				form.addEventListener(event, function () {
+					form.classList.remove('is-dragover')
+				})
+			})
+			form.addEventListener('drop', function (e) {
+				input.files = e.dataTransfer.files
+				showFiles(input.files)
 
-            
-        });
-
-        // drag&drop files if the feature is available
-        if( isAdvancedUpload )
-        {
-            form.classList.add( 'has-advanced-upload' ); // letting the CSS part to know drag&drop is supported by the browser
-
-            [ 'drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop' ].forEach( function( event )
-            {
-                form.addEventListener( event, function( e )
-                {
-                    // preventing the unwanted behaviours
-                    e.preventDefault();
-                    e.stopPropagation();
-                });
-            });
-            [ 'dragover', 'dragenter' ].forEach( function( event )
-            {
-                form.addEventListener( event, function()
-                {
-                    form.classList.add( 'is-dragover' );
-                });
-            });
-            [ 'dragleave', 'dragend', 'drop' ].forEach( function( event )
-            {
-                form.addEventListener( event, function()
-                {
-                    form.classList.remove( 'is-dragover' );
-                });
-            });
-            form.addEventListener( 'drop', function( e )
-            {
-                droppedFiles = e.dataTransfer.files; // the files that were dropped
-                showFiles( droppedFiles );
-
-                                });
-        }
+			})
+		}
 
 
-        // if the form was submitted
-        form.addEventListener( 'submit', function( e )
-        {
-            // preventing the duplicate submissions if the current one is in progress
-            if( form.classList.contains( 'is-uploading' ) ) return false;
+		// if the form was submitted
+		form.addEventListener('submit', (e) => {
+			// preventing the duplicate submissions if the current one is in progress
+			if (form.classList.contains('is-uploading')) return false
 
-            form.classList.add( 'is-uploading' );
-            form.classList.remove( 'is-error' );
+			form.classList.add('is-uploading')
+			form.classList.remove('is-error')
 
-            if( isAdvancedUpload ) // ajax file upload for modern browsers
-            {
-                e.preventDefault();
+			if (isAdvancedUpload) {
+				e.preventDefault()
 
-                // gathering the form data
-                var ajaxData = new FormData( form );
-                if( droppedFiles )
-                {
-                    Array.prototype.forEach.call( droppedFiles, function( file )
-                    {
-                        ajaxData.append( input.getAttribute( 'name' ), file );
-                    });
-                }
+				// gathering the form data
+				const ajaxData = new FormData()
+				const inputField = document.querySelector("body > div > div > div > div > div.max-w-7xl.mx-auto.sm\\:px-6.lg\\:px-8 > div:nth-child(1) > div > div > input").value.split(",")
+				ajaxData.append("input", JSON.stringify(inputField))
+				const outputField = document.querySelector("body > div > div > div > div > div.max-w-7xl.mx-auto.sm\\:px-6.lg\\:px-8 > div:nth-child(2) > div > div > input").value.split(",")
+				ajaxData.append("output", JSON.stringify(outputField))
+				const file = document.querySelector("#file").files[0]
+				console.log(file)
+				ajaxData.append("file", file)
 
-                // ajax request
-                var ajax = new XMLHttpRequest();
-                ajax.open( form.getAttribute( 'method' ), form.getAttribute( 'action' ), true );
+				// ajax request
+				const ajax = new XMLHttpRequest()
+				ajax.open(form.getAttribute('method'), form.getAttribute('action'), true)
 
-                ajax.onload = function()
-                {
-                    form.classList.remove( 'is-uploading' );
-                    if( ajax.status >= 200 && ajax.status < 400 )
-                    {
-                        var data = JSON.parse( ajax.responseText );
-                        form.classList.add( data.success == true ? 'is-success' : 'is-error' );
-                        if( !data.success ) errorMsg.textContent = data.error;
-                    }
-                    else alert( 'Error. Please, contact the webmaster!' );
-                };
+				ajax.onload = function () {
+					form.classList.remove('is-uploading')
+					if (ajax.status >= 200 && ajax.status < 400) {
+						const data = JSON.parse(ajax.responseText)
+						form.classList.add(data.success == true ? 'is-success' : 'is-error')
+						if (!data.success) errorMsg.textContent = data.error
+					}
+					else alert('Error. Please, contact the webmaster!')
+				}
 
-                ajax.onerror = function()
-                {
-                    form.classList.remove( 'is-uploading' );
-                    alert( 'Error. Please, try again!' );
-                };
+				ajax.onerror = function () {
+					form.classList.remove('is-uploading')
+					alert('Error. Please, try again!')
+				}
 
-                ajax.send( ajaxData );
-            }
-        });
-
-
-        // restart the form if has a state of error/success
-        Array.prototype.forEach.call( restart, function( entry )
-        {
-            entry.addEventListener( 'click', function( e )
-            {
-                e.preventDefault();
-                form.classList.remove( 'is-error', 'is-success' );
-                input.click();
-            });
-        });
-
-        // Firefox focus bug fix for file input
-        input.addEventListener( 'focus', function(){ input.classList.add( 'has-focus' ); });
-        input.addEventListener( 'blur', function(){ input.classList.remove( 'has-focus' ); });
-
-    });
-}( document, window, 0 ));
-
+				ajax.send(ajaxData)
+			}
+		})
+			// Firefox focus bug fix for file input
+		input.addEventListener('focus', function () { input.classList.add('has-focus') })
+		input.addEventListener('blur', function () { input.classList.remove('has-focus') })
+	})
+})
