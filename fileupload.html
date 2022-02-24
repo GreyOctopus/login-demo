@@ -18,24 +18,24 @@
     <div class="min-w-screen min-h-screen bg-gray-900 flex items-center justify-center px-5 py-5">
         <div class="bg-gray-100 text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden" style="max-width:1000px">
             <div class="w-full">
-                <div class="hidden md:block py-10 px-10">
-                    <div class="py-12">
-                        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                            <div
-                                class="flex flex-col items-center px-12 py-12 font-medium border-2 border-dashed border-gray-400 rounded-md">
-                                <svg class="w-14 h-14 text-indigo-500" viewBox="0 0 24 24">
+                <div class="md:block py-10 px-10">
+                    <div class="mx-auto py-6 text-center max-w-4xl">
+                        <form class="box" method="post" action="" enctype="multipart/form-data">
+                            <div class="box__input py-20 text-2xl">
+                                <svg class="w-12 h-12 text-white mx-auto mb-4" viewBox="0 0 24 24">
                                     <path fill="currentColor" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
                                 </svg>
-                                <p class="text-xl">Drag & drop files to upload</p>
-                                <p class="mb-2 text-xl">or <span class="text-indigo-500 italic">browse</span></p>
-                                <label
-                                    class="bg-white mb-4 px-4 py-2 inline-flex items-center border border-gray-400 rounded slide">
-                                    Select files
-                                    <input type="file" name="file" multiple class="sr-only">
-                                </label>
-                                <!-- <p class="font-normal text-xs">Maximum upload file size: 1MB</p> -->
+                                <input class="box__file" type="file" name="files[]" id="file"
+                                    data-multiple-caption="{count} files selected" multiple />
+                                <label class="text-white" for="file"><strong>Choose a file</strong><span
+                                        class="box__dragndrop"> or drag
+                                        it here</span></label>
+                                <!-- <button class="box__button" type="submit">Upload</button> -->
                             </div>
-                        </div>
+                            <div class="box__uploading">Uploading…</div>
+                            <div class="box__success">Done!</div>
+                            <div class="box__error">Error! <span></span>.</div>
+                        </form>
                     </div>
                     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         <div class="flex -mx-3">
@@ -50,8 +50,7 @@
                                         </svg>
                                     </div>
                                     <input type="text"
-                                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
-                                        placeholder="">
+                                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded border-2 border-gray-200 outline-none focus:border-indigo-500">
                                 </div>
                             </div>
                         </div>
@@ -67,8 +66,7 @@
                                         </svg>
                                     </div>
                                     <input type="text"
-                                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
-                                        placeholder="">
+                                        class="w-full -ml-10 pl-10 pr-3 py-2 rounded border-2 border-gray-200 outline-none focus:border-indigo-500">
                                 </div>
                             </div>
                         </div>
