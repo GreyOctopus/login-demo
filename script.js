@@ -161,29 +161,6 @@
 
                 ajax.send( ajaxData );
             }
-            else // fallback Ajax solution upload for older browsers
-            {
-                var iframeName	= 'uploadiframe' + new Date().getTime(),
-                    iframe		= document.createElement( 'iframe' );
-
-                    $iframe		= $( '<iframe name="' + iframeName + '" style="display: none;"></iframe>' );
-
-                iframe.setAttribute( 'name', iframeName );
-                iframe.style.display = 'none';
-
-                document.body.appendChild( iframe );
-                form.setAttribute( 'target', iframeName );
-
-                iframe.addEventListener( 'load', function()
-                {
-                    var data = JSON.parse( iframe.contentDocument.body.innerHTML );
-                    form.classList.remove( 'is-uploading' )
-                    form.classList.add( data.success == true ? 'is-success' : 'is-error' )
-                    form.removeAttribute( 'target' );
-                    if( !data.success ) errorMsg.textContent = data.error;
-                    iframe.parentNode.removeChild( iframe );
-                });
-            }
         });
 
 
