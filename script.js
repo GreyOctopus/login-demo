@@ -32,8 +32,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		// automatically submit the form on file select
 		input.addEventListener('change', function (e) {
 			showFiles(e.target.files)
-
-
 		})
 
 		// drag&drop files if the feature is available
@@ -108,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 				ajax.send(ajaxData)
 			}
 		})
-			// Firefox focus bug fix for file input
+		// Firefox focus bug fix for file input
 		input.addEventListener('focus', function () { input.classList.add('has-focus') })
 		input.addEventListener('blur', function () { input.classList.remove('has-focus') })
 	})
