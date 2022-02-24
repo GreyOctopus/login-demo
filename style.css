@@ -39,12 +39,7 @@
   display: inline-block;
   overflow: hidden;
 }
-/* .box__button {
-  font-weight: 700;
+ .box__button {
   color: rgb(99 102 241);
-  background-color: #e5edf1;
-  display: block;
-  padding: 8px 16px;
-  margin: auto;
   border-radius: 0.5rem;
-} */
+} 
