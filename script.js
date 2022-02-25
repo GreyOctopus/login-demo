@@ -76,9 +76,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 				// gathering the form data
 				const ajaxData = new FormData()
-				const inputField = document.querySelector("body > div > div > div > div > div.max-w-7xl.mx-auto.sm\\:px-6.lg\\:px-8 > div:nth-child(1) > div > div > input").value.split(",")
+				const inputField = document.querySelector("body > div > div > div > div > div.max-w-7xl.mx-auto.sm\\:px-6.lg\\:px-8 > div:nth-child(1) > div > div > input").value.split(" ")
 				ajaxData.append("input", JSON.stringify(inputField))
-				const outputField = document.querySelector("body > div > div > div > div > div.max-w-7xl.mx-auto.sm\\:px-6.lg\\:px-8 > div:nth-child(2) > div > div > input").value.split(",")
+				const outputField = document.querySelector("body > div > div > div > div > div.max-w-7xl.mx-auto.sm\\:px-6.lg\\:px-8 > div:nth-child(2) > div > div > input").value.split(" ")
 				ajaxData.append("output", JSON.stringify(outputField))
 				const file = document.querySelector("#file").files[0]
 				console.log(file)
