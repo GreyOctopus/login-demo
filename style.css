@@ -39,7 +39,36 @@
   display: inline-block;
   overflow: hidden;
 }
- .box__button {
+
+/* Button */
+/* Button Animation */
+.box__button {
+  z-index: 1;
+  font-family: sans-serif;
+  font-weight: 600;
   color: rgb(99 102 241);
-  border-radius: 0.5rem;
-} 
+  padding: 0.5em;
+  background-color: white;
+  border-radius: 0.4rem;
+}
+
+.box__button:hover {
+  cursor: pointer;
+  animation: jelly 0.5s;
+}
+
+@keyframes jelly {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(0.9, 1.1);
+  }
+  50% {
+    transform: scale(1.1, 0.9);
+  }
+  75% {
+    transform: scale(0.95, 1.05);
+  }
+}
