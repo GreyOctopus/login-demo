@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <div class="min-w-screen min-h-screen bg-gray-900 flex items-center justify-center px-5 py-5">
+    <div class="min-w-screen min-h-screen bg-gray-900 flex items-center justify-center px-5 py-5 font-sans">
         <div class="bg-gray-100 text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden" style="max-width:1000px">
             <div class="w-full">
                 <div class="md:block py-10 px-10">
@@ -25,17 +25,23 @@
                                 <svg class="w-12 h-12 text-white mx-auto mb-4" viewBox="0 0 24 24">
                                     <path fill="currentColor" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
                                 </svg>
-                                <input class="box__file" type="file" name="file" id="file"
-                                    data-multiple-caption="{count} files selected" multiple />
-                                <label class="text-white" for="file"><strong>Choose a file</strong><span
-                                        class="box__dragndrop"> or drag
+                                <input
+                                    class="box__file w-[0.1px] h-[0.1px] opacity-0 overflow-hidden absolute -z-[1] text-ellipsis max-w-[80%] whitespace-nowrap cursor-pointer inline-block overflow-hidden"
+                                    type="file" name="file" id="file" data-multiple-caption="{count} files selected"
+                                    multiple />
+                                <label
+                                    class="text-white text-ellipsis max-w-[80%] whitespace-nowrap cursor-pointer inline-block overflow-hidden"
+                                    for="file"><strong>Choose a file</strong><span class="box__dragndrop hidden"> or
+                                        drag
                                         it here</span></label>
-                                <button class="box__button block mt-5 mx-auto bg-neutral-50 px-3 py-2 font-semibold"
+                                <button
+                                    class="box__button block mt-5 mx-auto bg-white px-3 py-2 font-semibold z-[1] relative text-indigo-500 rounded hover:cursor-pointer
+                                    before:-z-[1] before:absolute before:inset-0 before:border-4 before:origin-center before:scale-100 before:border-solid before:border-white before:rounded"
                                     type="submit">Upload</button>
                             </div>
-                            <div class="box__uploading">Uploading…</div>
-                            <div class="box__success">Done!</div>
-                            <div class="box__error">Error! <span></span>.</div>
+                            <div class="box__uploading hidden">Uploading…</div>
+                            <div class="box__success hidden">Done!</div>
+                            <div class="box__error hidden">Error! <span></span>.</div>
                         </form>
                     </div>
                     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

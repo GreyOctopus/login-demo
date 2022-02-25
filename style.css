@@ -1,10 +1,4 @@
 
-.box__dragndrop,
-.box__uploading,
-.box__success,
-.box__error {
-  display: none;
-}
 .box.has-advanced-upload {
   background-color: rgb(99 102 241);
   outline: 0.2rem dashed white;
@@ -23,52 +17,10 @@
 .box.is-uploading .box__uploading {
   display: block;
 }
-.box__file {
-  width: 0.1px;
-  height: 0.1px;
+
+.box__button:focus::before {
+  transition: all 0.75s ease-in-out;
+  transform-origin: center;
+  transform: scale(1.75);
   opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
-}
-.box__file + label {
-  max-width: 80%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  cursor: pointer;
-  display: inline-block;
-  overflow: hidden;
-}
-
-/* Button */
-/* Button Animation */
-.box__button {
-  z-index: 1;
-  font-family: sans-serif;
-  font-weight: 600;
-  color: rgb(99 102 241);
-  padding: 0.5em;
-  background-color: white;
-  border-radius: 0.4rem;
-}
-
-.box__button:hover {
-  cursor: pointer;
-  animation: jelly 0.5s;
-}
-
-@keyframes jelly {
-  0%,
-  100% {
-    transform: scale(1, 1);
-  }
-  25% {
-    transform: scale(0.9, 1.1);
-  }
-  50% {
-    transform: scale(1.1, 0.9);
-  }
-  75% {
-    transform: scale(0.95, 1.05);
-  }
 }
